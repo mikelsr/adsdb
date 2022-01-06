@@ -17,5 +17,5 @@ class WebResourceDataSource(DataSource):
         with urlopen(self._url) as f:
             return f.read()
 
-    def wrap(self):
-        pass
+    def run(self):
+        self.store(self.wrap(self.load()))

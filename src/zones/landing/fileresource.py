@@ -28,3 +28,6 @@ class FileDataSource(DataSource):
         :return: Dictionary object containing the wrapped data.
         """
         return super().wrap(origin=self._filepath, data=data)
+
+    def run(self):
+        self.store(self.wrap(self.load()))

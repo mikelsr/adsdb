@@ -9,6 +9,9 @@ from zones.config import config
 
 
 class DataSource(ABC):
+    """DataSource is a class with abstract method and is not intended to be used directly,
+    instead it should be inherited."""
+
     @abstractmethod
     def load(self) -> io.TextIOBase:
         """Load data from the datasource in the form of io.TextIOBase. The implementation must be
@@ -54,3 +57,9 @@ class DataSource(ABC):
         k = f'{reduced_origin}_{wrapped_data["metadata"]["datetime"]}'
         v = dumps(wrapped_data)
         redis_connection.set(k, v)
+
+    @abstractmethod
+    def run(self):
+        """This method must load data, wrap it and store it, ideally in the following way:
+        self.store(self.wrap(self.load()))"""
+        pass
