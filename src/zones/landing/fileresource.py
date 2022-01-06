@@ -1,4 +1,3 @@
-import json
 import io
 
 from zones.landing.datasource import DataSource
@@ -6,6 +5,7 @@ from zones.landing.datasource import DataSource
 
 class FileDataSource(DataSource):
     """FileDataSource is used to load data from files accessible in the filesystem."""
+
     def __init__(self, filepath: str) -> None:
         """Class constructor.
 
