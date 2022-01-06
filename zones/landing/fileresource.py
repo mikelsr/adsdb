@@ -5,7 +5,12 @@ from zones.landing.datasource import DataSource
 
 
 class FileDataSource(DataSource):
+    """FileDataSource is used to load data from files accessible in the filesystem."""
     def __init__(self, filepath: str) -> None:
+        """Class constructor.
+
+        :param filepath: Filepath of the datasource.
+        """
         self._filepath = filepath
 
     def load(self) -> io.TextIOBase:

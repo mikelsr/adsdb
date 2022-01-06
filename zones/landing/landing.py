@@ -2,7 +2,7 @@ from typing import List
 
 from zones.landing.datasource import DataSource
 from zones.landing.webresource import WebResourceDataSource
-from zones.landing.file import FileDataSource
+from zones.landing.fileresource import FileDataSource
 
 
 def run_once():
