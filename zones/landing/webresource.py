@@ -1,19 +1,18 @@
-from landing.datasource import DataSource
+from urllib.request import urlopen
 
-# from watchdog.observers import Observer
-# from watchdog.events import FileSystemEventHandler
+from zones.landing.datasource import DataSource
+
 
 # TODO: find a good way to specify the persistent directory root
 
+
 class WebResourceDataSource(DataSource):
-    def __init__(self, target:str, url: str) -> None:
+    def __init__(self, url: str) -> None:
         self._url = url
 
-    def load():
-        pass
+    def load(self):
+        with urlopen(self._url) as f:
+            return f.read()
 
-    def wrap():
-        pass
-
-    def store():
+    def wrap(self):
         pass
