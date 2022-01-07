@@ -1,11 +1,14 @@
+import os
 import pytest
 
 from zones.landing.fileresource import FileDataSource
 from zones.landing.webresource import WebResourceDataSource
 
 
+_test_path = os.path.dirname(os.path.abspath(__file__))
+_test_data_path = os.path.join(_test_path, "data")
 _test_data_sources = [
-    FileDataSource(filepath="/Users/mikel/Code/github.com/mikelsr/adsdb/data/Population-EstimatesData-1.csv"),
+    FileDataSource(filepath=os.path.join(_test_data_path, "Population-EstimatesData-1.csv")),
     WebResourceDataSource(url="https://adsdb.mikel.xyz/Population-EstimatesData-2.csv"),
 ]
 
