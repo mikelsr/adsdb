@@ -8,8 +8,9 @@ before_install:
   - pip install -U pip
   - pip install -U pytest
   - pip install -U pytest-cov
+  - pip install iU tox
   - pip install codecov
 install:
   - pip install .
   - pip install ".[test]"
-script: pytest
+script: tox
