@@ -13,5 +13,3 @@ install:
   - pip install .
   - pip install ".[test]"
 script: pytest
-after_success:
-  - codecov
