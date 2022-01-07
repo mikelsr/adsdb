@@ -1,7 +1,5 @@
 import pytest
-from typing import List
 
-from zones.landing.datasource import DataSource
 from zones.landing.fileresource import FileDataSource
 from zones.landing.webresource import WebResourceDataSource
 
