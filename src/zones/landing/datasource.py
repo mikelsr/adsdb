@@ -13,7 +13,7 @@ class DataSource(ABC):
     instead it should be inherited."""
 
     @abstractmethod
-    def load(self) -> io.TextIOBase:
+    def load(self) -> str:
         """Load data from the datasource in the form of io.TextIOBase. The implementation must be
         done by each specific datasource.
 
@@ -21,7 +21,11 @@ class DataSource(ABC):
         """
         pass
 
-    def wrap(self, origin: str, data: dict, metadata: dict = {}) -> dict:
+    @abstractmethod
+    def origin(self) -> str:
+        pass
+
+    def wrap(self, data: str, metadata: dict = {}) -> dict:
         """Wrap the data in a dictionary object that contains both the data and metadata.
 
         :param origin: Origin of the data: a filepath, url...
@@ -30,17 +34,17 @@ class DataSource(ABC):
         with the existing metadata fields.
         :return: Dictionary object with the wrapped data.
         """
-        assert origin is not None and data is not None
+        assert self.origin() is not None and data is not None
         return {
             "metadata": {
                 **metadata,
                 **{
-                    "origin": origin,
+                    "origin": self.origin(),
                     "origin_class": self.__class__.__name__,
                     "datetime": datetime.now().strftime("%Y-%m-%dT%H-%M-%SZ"),
                 },
             },
-            "data": data,
+            "data": str(data),
         }
 
     def store(self, wrapped_data: dict):

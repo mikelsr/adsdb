@@ -7,7 +7,7 @@ from zones.landing.fileresource import FileDataSource
 
 def run_once():
     datasources: List[DataSource] = [
-        FileDataSource(filepath="/Users/mikel/Code/github.com/mikelsr/adsdb/data/Population-EstimatesData-1.csv"),
+        FileDataSource(filepath="/home/mikel/Code/github.com/mikelsr/adsdb/data/Population-EstimatesData-1.csv"),
         WebResourceDataSource(url="https://adsdb.mikel.xyz/Population-EstimatesData-2.csv"),
     ]
 

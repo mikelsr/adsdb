@@ -13,13 +13,17 @@ class FileDataSource(DataSource):
         """
         self._filepath = filepath
 
-    def load(self) -> io.TextIOBase:
+    def origin(self) -> str:
+        assert self._filepath is not None
+        return self._filepath
+
+    def load(self) -> str:
         """
         Load data from the file of the FileDataSource.
         :return: Raw data in the form of io.TextIOBase.
         """
         with open(self._filepath, "r") as data:
-            return data
+            return str(data.read())
 
     def wrap(self, data: dict) -> dict:
         """Wrap data using DataSource.wrap passing the filepath as origin.
@@ -27,7 +31,7 @@ class FileDataSource(DataSource):
         :param data: Raw data to wrap.
         :return: Dictionary object containing the wrapped data.
         """
-        return super().wrap(origin=self._filepath, data=data)
+        return super().wrap(data=data)
 
     def run(self):
         self.store(self.wrap(self.load()))

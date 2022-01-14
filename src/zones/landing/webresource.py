@@ -13,9 +13,13 @@ class WebResourceDataSource(DataSource):
         """
         self._url = url
 
-    def load(self):
+    def origin(self) -> str:
+        assert self._url is not None
+        return self._url
+
+    def load(self) -> str:
         with urlopen(self._url) as f:
-            return f.read()
+            return str(f.read())
 
     def run(self):
         self.store(self.wrap(self.load()))
