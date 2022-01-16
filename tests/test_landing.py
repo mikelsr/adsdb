@@ -1,50 +1,22 @@
 from configparser import ConfigParser
 import os
-from pymongo import MongoClient
 from pymongo.collection import Collection
 import pytest
 
-import zones.config as original_config
+
 from zones.landing.datasource import DataSource
 from zones.landing.fileresource import FileDataSource
 from zones.landing.webresource import WebResourceDataSource
 
 
-_test_path = os.path.dirname(os.path.abspath(__file__))
-_test_data_path = os.path.join(_test_path, "data")
+def get_data_path(test_data_path):
+    return test_data_path
+
+
 _test_data_sources = [
-    FileDataSource(
-        filepath=os.path.join(_test_data_path, "Population-EstimatesData-1.csv")
-    ),
+    FileDataSource(filepath=os.path.join(get_data_path(), "Population-EstimatesData-1.csv")),
     WebResourceDataSource(url="https://adsdb.mikel.xyz/Population-EstimatesData-2.csv"),
 ]
-
-
-@pytest.fixture
-def config():
-    test_config_ini = os.path.join(_test_path, "config.ini")
-    original_config.reload(test_config_ini)
-
-    yield original_config.config
-
-
-@pytest.fixture
-def mongo_collection(config):
-    """Fixture for the mongo collection used for landing tests."""
-    client = MongoClient(
-        host=config["MONGO"]["Host"],
-        port=int(config["MONGO"]["Port"]),
-    )
-
-    # Extract collection from client
-    db_name = config["MONGO"]["PersistentLandingDB"]
-    collection_name = config["MONGO"]["PersistentLandingCollection"]
-    collection = client[db_name][collection_name]
-
-    yield collection
-
-    # Drop test table
-    client.drop_database(db_name)
 
 
 @pytest.mark.parametrize("data_source", _test_data_sources)
@@ -73,10 +45,7 @@ def _test_data_sources_wrap(data_source: DataSource, data: str) -> dict:
 
 
 def _test_data_sources_store(
-    data_source: DataSource,
-    wrapped_data: dict,
-    test_config: ConfigParser,
-    mongo_collection: Collection,
+    data_source: DataSource, wrapped_data: dict, test_config: ConfigParser, mongo_collection: Collection
 ):
     data_source.store(wrapped_data, use_config=test_config)
     stored_item = mongo_collection.find_one(

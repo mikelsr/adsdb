@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from pymongo import MongoClient
 
 from zones.config import config
+from zones.utils import persistent_mongodb_collection
 
 
 class DataSource(ABC):
@@ -52,13 +52,7 @@ class DataSource(ABC):
         :return: None.
         """
         assert wrapped_data is not None
-        client = MongoClient(
-            host=use_config["MONGO"]["Host"],
-            port=int(use_config["MONGO"]["Port"]),
-        )
-        collection = client[use_config["MONGO"]["PersistentLandingDB"]][
-            use_config["MONGO"]["PersistentLandingCollection"]
-        ]
+        collection = persistent_mongodb_collection(use_config=use_config)
         collection.insert_one(wrapped_data)
 
     def run(self):
