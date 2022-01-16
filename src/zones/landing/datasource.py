@@ -1,9 +1,6 @@
-import io
 from abc import ABC, abstractmethod
 from datetime import datetime
-from json import dumps
-from os import path
-import redis
+from pymongo import MongoClient
 
 from zones.config import config
 
@@ -47,23 +44,24 @@ class DataSource(ABC):
             "data": str(data),
         }
 
-    def store(self, wrapped_data: dict):
+    def store(self, wrapped_data: dict, use_config=config):
         """Store wrapped data in persistent key-value storage using the origin and datetime as keys.
 
         :param wrapped_data: Data to be stored.
+        :param use_config: Configuration to be used. Defaults to package configuration.
         :return: None.
         """
         assert wrapped_data is not None
-        redis_connection = redis.Redis(
-            host=config["REDIS"]["Host"], port=int(config["REDIS"]["Port"]), db=int(config["REDIS"]["Database"])
+        client = MongoClient(
+            host=use_config["MONGO"]["Host"],
+            port=int(use_config["MONGO"]["Port"]),
         )
-        reduced_origin = path.basename(wrapped_data["metadata"]["origin"])
-        k = f'{reduced_origin}_{wrapped_data["metadata"]["datetime"]}'
-        v = dumps(wrapped_data)
-        redis_connection.set(k, v)
+        collection = client[use_config["MONGO"]["PersistentLandingDB"]][
+            use_config["MONGO"]["PersistentLandingCollection"]
+        ]
+        collection.insert_one(wrapped_data)
 
-    @abstractmethod
     def run(self):
         """This method must load data, wrap it and store it, ideally in the following way:
         self.store(self.wrap(self.load()))"""
-        pass
+        self.store(self.wrap(self.load()))
