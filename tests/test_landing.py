@@ -8,8 +8,10 @@ from zones.landing.datasource import DataSource
 from zones.landing.fileresource import FileDataSource
 from zones.landing.webresource import WebResourceDataSource
 
+from tests.conftest import test_data_path
 
-def get_data_path(test_data_path):
+
+def get_data_path():
     return test_data_path
 
 
@@ -20,10 +22,10 @@ _test_data_sources = [
 
 
 @pytest.mark.parametrize("data_source", _test_data_sources)
-def test_data_sources(data_source, config, mongo_collection):
+def test_data_sources(data_source, landing_config, mongo_landing_collection):
     data = _test_data_sources_load(data_source)
     wrapped_data = _test_data_sources_wrap(data_source, data)
-    _test_data_sources_store(data_source, wrapped_data, config, mongo_collection)
+    _test_data_sources_store(data_source, wrapped_data, landing_config, mongo_landing_collection)
 
 
 def _test_data_sources_load(data_source: DataSource) -> str:
