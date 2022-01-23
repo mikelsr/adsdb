@@ -1,11 +1,11 @@
 import os
 import pandas as pd
 import pytest
-from sqlalchemy import create_engine
 
+# from sqlalchemy import create_engine
 from zones.formatted.formatter import Formatter
 from zones.landing.fileresource import FileDataSource
-from zones.utils import formatted_postgres_url, postgres_select_query
+from zones.utils import postgres_select_query
 from tests.conftest import test_data_path
 
 
@@ -40,6 +40,6 @@ def test_formatter_load_store(mongo_formatted_collection, formatted_config, post
     result = pd.read_sql_query(postgres_select_query(formatted_config), con=postgres_formatted_engine)
 
     # Remove index column created for postgres
-    result.drop('index', axis=1, inplace=True)
+    result.drop("index", axis=1, inplace=True)
 
     assert data.shape == result.shape

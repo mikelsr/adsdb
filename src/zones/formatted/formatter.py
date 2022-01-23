@@ -2,6 +2,7 @@ from io import StringIO
 import pandas as pd
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+
 import psycopg2.errors as errors
 import re
 from sqlalchemy import create_engine

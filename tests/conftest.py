@@ -2,7 +2,8 @@ import configparser
 import os
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-import psycopg2.errors as errors
+
+# import psycopg2.errors as errors
 import pytest
 from pymongo import MongoClient
 from sqlalchemy import create_engine

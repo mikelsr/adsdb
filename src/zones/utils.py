@@ -18,9 +18,7 @@ def persistent_mongodb_collection(use_config=config):
 
 def formatted_postgres_url(use_config=config):
     return "postgresql://{}:{}/{}".format(
-        use_config["POSTGRES"]["Host"],
-        use_config["POSTGRES"]["Port"],
-        use_config["POSTGRES"]["FormattedDB"],
+        use_config["POSTGRES"]["Host"], use_config["POSTGRES"]["Port"], use_config["POSTGRES"]["FormattedDB"]
     )
 
 
