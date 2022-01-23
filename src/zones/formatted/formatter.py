@@ -36,14 +36,15 @@ class Formatter:
         return single_df
 
     @staticmethod
-    def store(df, use_config=config):
+    def store(df, use_config=config, db=None, table=None):
         engine = create_engine(formatted_postgres_url(use_config=use_config))
+        db_name = db if db is not None else use_config["POSTGRES"]["FormattedDB"]
+        table_name = table if table is not None else use_config["POSTGRES"]["FormattedTable"]
         try:
             conn = psycopg2.connect()
             conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-            db_name = use_config["POSTGRES"]["FormattedDB"]
             conn.cursor().execute(f"CREATE DATABASE {db_name};")
             conn.close()
         except errors.DuplicateDatabase:
             print("DB already existed.")
-        df.to_sql(use_config["POSTGRES"]["FormattedTable"], engine)
+        df.to_sql(table_name, engine)
