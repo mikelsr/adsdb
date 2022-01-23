@@ -51,4 +51,3 @@ class Formatter:
 
 if __name__ == "__main__":
     data = Formatter.load()
-

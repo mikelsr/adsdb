@@ -7,12 +7,12 @@ from zones.config import config
 
 
 def remove_outliers(df):
-    max_deviation = int(config['TRUST']['MaxDeviation'])
+    max_deviation = int(config["TRUST"]["MaxDeviation"])
     df[(np.abs(scipy.stats.zscore(df)) < max_deviation).all(axis=1)]
 
 
 def remove_duplicates(df):
-    df.drop_duplicates(keep='last')
+    df.drop_duplicates(keep="last")
 
 
 def profile_data(df):
@@ -20,6 +20,4 @@ def profile_data(df):
     profile.to_file(outputfile=f"{config['TRUST']['ProfilingFile']}-{datetime.now()}")
 
 
-data_quality_processes = [
-    remove_duplicates, remove_outliers, profile_data
-]
+data_quality_processes = [remove_duplicates, remove_outliers, profile_data]
