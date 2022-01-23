@@ -1,8 +1,13 @@
 import configparser
 import os
+import psycopg2
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+import psycopg2.errors as errors
 import pytest
 from pymongo import MongoClient
+from sqlalchemy import create_engine
 
+from zones.utils import formatted_postgres_url
 
 test_path = os.path.dirname(os.path.abspath(__file__))
 test_data_path = os.path.join(test_path, "data")
@@ -56,3 +61,22 @@ def mongo_formatted_collection(formatted_config):
 
     # Drop test table
     client.drop_database(db_name)
+
+
+@pytest.fixture
+def postgres_formatted_engine(formatted_config):
+    # Use one engine to create the test database
+    db_name = formatted_config["POSTGRES"]["FormattedDB"]
+    conn = psycopg2.connect()
+    conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+    engine = create_engine(formatted_postgres_url(use_config=formatted_config))
+    try:
+        yield engine
+    # Error will be raised if DB already exists
+    # except errors.DuplicateDatabase:
+    #     yield create_engine(formatted_postgres_url(use_config=formatted_config))
+    finally:
+        engine.dispose()
+        # DROP TEST DATABASE
+        conn.cursor().execute(f"DROP DATABASE {db_name};")
+        conn.close()

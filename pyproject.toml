@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [tool.pytest.ini_options]
 addopts = "--cov=zones"
 testpaths = [
-    "tests",
+    "tests/test_landing.py",
 ]
 
 [tool.mypy]

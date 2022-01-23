@@ -14,3 +14,15 @@ def persistent_mongodb_collection(use_config=config):
     collection_name = use_config["MONGO"]["PersistentLandingCollection"]
     collection = client[db_name][collection_name]
     return collection
+
+
+def formatted_postgres_url(use_config=config):
+    return "postgresql://{}:{}/{}".format(
+        use_config["POSTGRES"]["Host"],
+        use_config["POSTGRES"]["Port"],
+        use_config["POSTGRES"]["FormattedDB"],
+    )
+
+
+def postgres_select_query(use_config=config):
+    return f'SELECT * FROM "{use_config["POSTGRES"]["FormattedTable"]}";'
