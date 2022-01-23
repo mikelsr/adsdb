@@ -6,4 +6,5 @@ psycopg2==2.9.3
 pymongo==4.0.1
 redis==4.1.0
 scipy==1.7.3
+sklearn==0.0
 SQLAlchemy==1.4.29

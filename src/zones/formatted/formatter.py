@@ -2,7 +2,6 @@ from io import StringIO
 import pandas as pd
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-
 import psycopg2.errors as errors
 import re
 from sqlalchemy import create_engine
@@ -48,3 +47,8 @@ class Formatter:
         except errors.DuplicateDatabase:
             print("DB already existed.")
         df.to_sql(table_name, engine)
+
+
+if __name__ == "__main__":
+    data = Formatter.load()
+
