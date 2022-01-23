@@ -1,0 +1,5 @@
+ignore:
+  - "src/zones/formatted"
+  - "src/zones/explotation"
+  - "src/zones/landing"
+  - "models.py"
